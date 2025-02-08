@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Sidebar from "./components/Sidebar"
+import  { AppSidebar } from "./components/Sidebar"
 import FlashcardFeed from "./components/FlashcardFeed"
 import { Button } from "@/components/ui/button"
 import { Maximize } from "lucide-react"
@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <AppSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       <main className="flex-1 relative overflow-hidden">
         <div className="absolute top-4 left-4 z-10">
           <Button variant="outline" size="icon" onClick={() => setSidebarOpen(true)}>
