@@ -25,16 +25,24 @@ client = genai.Client(api_key=os.getenv("API_KEY"))
 def generate_flashcards(topic):
     # Request flashcard generation from Gemini API
     response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=f"Generate 5 flashcard questions based on {topic}"
+        model="gemini-2.0-flash", contents=f"Generate 5 flashcard questions based on {topic}, make sure it is in this format Question: .... new line Answer:..."
     )
 
     flashcards = []
     if response and response.text:
-        content = response.text.split("\n")
-        for i in range(0, len(content), 2):  # Assuming questions and answers alternate
-            question = content[i].strip()
-            answer = content[i + 1].strip() if i + 1 < len(content) else ""
-            flashcards.append({"question": question, "answer": answer})
+        content = response.text.strip().split("\n")
+        
+        # Parse the content based on 'Question:' and 'Answer:'
+        question = None
+        for line in content:
+            line = line.strip()
+            
+            if line.startswith("Question:"):
+                question = line[len("Question:"):].strip()  # Extract the question
+            elif line.startswith("Answer:") and question is not None:
+                answer = line[len("Answer:"):].strip()  # Extract the answer
+                flashcards.append({"question": question, "answer": answer})
+                question = None  # Reset question for the next pair
 
     return flashcards
 
