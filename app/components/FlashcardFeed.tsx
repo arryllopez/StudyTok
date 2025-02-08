@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Flashcard from "./Flashcard"
+import { SelectedTopicContext } from "@/context/SelectedTopicContext"
 
 //the section for the mock flashcards
 const mockFlashcards = [
@@ -13,14 +14,25 @@ const mockFlashcards = [
 ]
 
 export default function FlashcardFeed() {
+  const { selectedTopic } = useContext(SelectedTopicContext)
+  const flashcards = selectedTopic?.flashcards || [] // Use flashcards from the selected topic
+
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    if (event.deltaY > 0 && currentIndex < mockFlashcards.length - 1) {
+    if (event.deltaY > 0 && currentIndex < flashcards.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else if (event.deltaY < 0 && currentIndex > 0) {
       setCurrentIndex(currentIndex - 1)
     }
+  }
+
+  if (!selectedTopic) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <p>Please select a topic from the sidebar to view flashcards.</p>
+      </div>
+    )
   }
 
   return (
@@ -29,7 +41,7 @@ export default function FlashcardFeed() {
         className="h-full transition-transform duration-300 ease-in-out"
         style={{ transform: `translateY(-${currentIndex * 100}%)` }}
       >
-        {mockFlashcards.map((flashcard) => (
+        {flashcards.map((flashcard) => (
           <div key={flashcard.id} className="h-full flex items-center justify-center">
             <Flashcard question={flashcard.question} answer={flashcard.answer} />
           </div>
