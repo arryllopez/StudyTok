@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Flashcard from "./Flashcard"
 
+//the section for the mock flashcards
 const mockFlashcards = [
   { id: 1, question: "What is the capital of France?", answer: "Paris" },
   { id: 2, question: 'Who wrote "Romeo and Juliet"?', answer: "William Shakespeare" },
