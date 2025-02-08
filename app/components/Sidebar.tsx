@@ -37,7 +37,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
           <Label htmlFor="topic">Enter a topic:</Label>
           <Input id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g., JavaScript" />
           <Button className="w-full" onClick={() => console.log("Generate flashcards for:", topic)}>
-            Generate Flashcards
+            AI Generate Flashcards
           </Button>
         </div>
       </div>
