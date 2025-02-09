@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import FlashcardFeed from "./FlashcardFeed"
 
 interface Topic {
   id: string
@@ -110,9 +109,6 @@ export function AppSidebar() {
 
   const handleDeleteTopic = (topicId: string) => {
     setTopics(topics.filter((t) => t.id !== topicId))
-    if (selectedTopic && selectedTopic.id === topicId) {
-      setSelectedTopic(null)
-    }
   }
 
   const handleStartEdit = (topic: Topic) => {
@@ -123,16 +119,16 @@ export function AppSidebar() {
 
   const handleSaveEdit = () => {
     if (selectedTopic) {
-      const updatedTopic = { ...selectedTopic, questions: editingQuestions }
-      setTopics(topics.map((t) => (t.id === selectedTopic.id ? updatedTopic : t)))
-      setSelectedTopic(updatedTopic)
+      setTopics(topics.map((t) => (t.id === selectedTopic.id ? { ...selectedTopic, questions: editingQuestions } : t)))
       setIsEditTopicOpen(false)
+      setSelectedTopic(null)
       setEditingQuestions([])
     }
   }
 
   const handleCancelEdit = () => {
     setIsEditTopicOpen(false)
+    setSelectedTopic(null)
     setEditingQuestions([])
   }
 
@@ -167,9 +163,9 @@ export function AppSidebar() {
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar collapsible="icon" className="border-r">
+    <SidebarProvider defaultOpen>
+      <div className="flex min-h-screen">
+        <Sidebar collapsible="icon">
           <SidebarHeader className="p-4">
             <Dialog open={isNewTopicOpen} onOpenChange={setIsNewTopicOpen}>
               <DialogTrigger asChild>
@@ -257,9 +253,7 @@ export function AppSidebar() {
                   {topics.map((topic) => (
                     <SidebarMenuItem key={topic.id} className="group">
                       <div className="flex w-full items-center justify-between px-2">
-                        <SidebarMenuButton className="flex-1" onClick={() => setSelectedTopic(topic)}>
-                          {topic.name}
-                        </SidebarMenuButton>
+                        <SidebarMenuButton className="flex-1">{topic.name}</SidebarMenuButton>
                         <div className="flex items-center gap-1">
                           <Dialog open={isEditTopicOpen} onOpenChange={setIsEditTopicOpen}>
                             <DialogTrigger asChild>
@@ -325,26 +319,14 @@ export function AppSidebar() {
           </SidebarContent>
           <SidebarRail />
         </Sidebar>
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col">
           <header className="flex h-16 items-center justify-between border-b px-6">
             <SidebarTrigger />
             <Button variant="ghost" size="icon" onClick={toggleFullscreen}>
               {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
             </Button>
           </header>
-          <main className="flex-1 overflow-hidden">
-            {selectedTopic && selectedTopic.questions.length > 0 ? (
-              <FlashcardFeed flashcards={selectedTopic.questions} />
-            ) : (
-              <div className="h-full w-full flex items-center justify-center">
-                <p className="text-xl text-gray-500">
-                  {selectedTopic
-                    ? "No flashcards available for this topic. Please add questions."
-                    : "Please select a topic to view flashcards."}
-                </p>
-              </div>
-            )}
-          </main>
+          <main className="flex-1 p-6">{/* Main content */}</main>
         </div>
       </div>
     </SidebarProvider>
