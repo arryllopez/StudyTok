@@ -19,7 +19,8 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Initialize the Gemini client
-client = genai.Client(api_key=os.getenv("API_KEY"))
+client = genai.Client(api_key=os.getenv("GOOGLE_SPEECH"))
+
 
 # Define route for generating flashcards
 def generate_flashcards(topic):
