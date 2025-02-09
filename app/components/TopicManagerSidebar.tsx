@@ -17,10 +17,11 @@ export type Topic = {
 }
 
 interface TopicManagerSidebarProps {
-  onTopicSelect: (topic: Topic) => void
+  onTopicSelect: (topic: Topic | null) => void
+  selectedTopic: Topic | null
 }
 
-export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSidebarProps) {
+export default function TopicManagerSidebar({ onTopicSelect, selectedTopic }: TopicManagerSidebarProps) {
   const [topics, setTopics] = useState<Topic[]>([])
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [createMode, setCreateMode] = useState<"generate" | "manual">("generate")
@@ -34,6 +35,12 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
     setNumQuestions(5)
     setManualQuestions([])
     setCreateMode("generate")
+  }
+
+  const handleDeleteQuestion = (index: number) => {
+    if (!editingTopic) return
+    const updatedQuestions = editingTopic.questions.filter((_, i) => i !== index)
+    setEditingTopic({ ...editingTopic, questions: updatedQuestions })
   }
 
   const handleGenerate = async () => {
@@ -67,11 +74,16 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
   }
 
   const handleDeleteTopic = (id: string) => {
+    if (selectedTopic && selectedTopic.id === id) {
+      onTopicSelect(null)
+    }
     setTopics((prev) => prev.filter((topic) => topic.id !== id))
   }
 
   const handleEditTopicSave = (updatedTopic: Topic) => {
-    setTopics((prev) => prev.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic)))
+    setTopics((prev) =>
+      prev.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic))
+    )
     setEditingTopic(null)
   }
 
@@ -224,7 +236,7 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
               placeholder="Enter topic name"
             />
             <div className="mt-4">
-              <h3 className="font-semibold">Questions &amp; Answers</h3>
+              <h3 className="font-semibold">Questions & Answers</h3>
               {editingTopic.questions.map((q, index) => (
                 <div key={index} className="mt-2 border p-2 rounded">
                   <Input
@@ -246,6 +258,14 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                     }}
                     placeholder="Answer"
                   />
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => handleDeleteQuestion(index)}
+                  >
+                    Delete Question
+                  </Button>
                 </div>
               ))}
               <Button

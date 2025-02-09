@@ -59,7 +59,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen overflow-hidden relative">
-      <TopicManagerSidebar onTopicSelect={setSelectedTopic} />
+      <TopicManagerSidebar onTopicSelect={setSelectedTopic} selectedTopic={selectedTopic} />
       <main className="flex-1 relative overflow-hidden">
         <div className="absolute top-4 right-4 z-50">
           <Button variant="outline" size="icon" onClick={toggleFullscreen}>
