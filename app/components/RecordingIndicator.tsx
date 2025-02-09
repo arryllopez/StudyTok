@@ -33,7 +33,7 @@ export default function RecordingIndicator({ isRecording }: RecordingIndicatorPr
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="text-4xl text-white font-bold">
-        {countdown > 0 ? countdown : "Speak Now!"}
+        {countdown > 0 ? countdown : "Answer!"}
       </div>
     </div>
   );

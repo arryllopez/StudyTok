@@ -23,7 +23,7 @@ speech_client = speech.SpeechClient(credentials=credentials)
 # Audio settings
 SAMPLE_RATE = 48000  # Match the config settings
 CHANNELS = 1  # Mono audio
-DURATION = 5  # Record for 5 seconds
+DURATION = 6  # Record for 5 seconds
 
 def record_audio():
     """Captures real-time audio without waiting for the full duration."""
