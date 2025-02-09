@@ -6,7 +6,6 @@
 
 #trying gemini api
 import os
-import re
 from google import genai
 from flask import Flask, jsonify, request
 from flask_cors import CORS  # Import CORS
@@ -25,7 +24,6 @@ client = genai.Client(api_key=os.getenv("GOOGLE_SPEECH"))
 
 # Define route for generating flashcards
 def generate_flashcards(topic, num_questions=5):
-    # Create a dynamic prompt based on the user input number of questions
     prompt = (
         f"Generate {num_questions} flashcard questions based on '{topic}'. "
         "Each flashcard should follow this format:\n"
@@ -37,19 +35,20 @@ def generate_flashcards(topic, num_questions=5):
         model="gemini-2.0-flash",
         contents=prompt
     )
-
+    
     flashcards = []
     if response and response.text:
-        response_text = response.text
-        # Remove any content before the first "Question:" to avoid a misaligned pair.
-        first_question_index = response_text.find("Question:")
-        if first_question_index != -1:
-            response_text = response_text[first_question_index:]
-
-        # Use a refined regex that anchors "Question:" at the start of lines.
-        matches = re.findall(r"(?im)^Question:\s*(.*?)\s*\nAnswer:\s*(.*?)(?=\nQuestion:|\Z)", response_text)
-        for question, answer in matches:
-            flashcards.append({"question": question.strip(), "answer": answer.strip()})
+        response_text = response.text.strip()
+        # Split the text by "Question:".
+        segments = response_text.split("Question:")
+        # The first segment could be an empty string or intro text, so skip it.
+        for seg in segments[1:]:
+            if "Answer:" in seg:
+                parts = seg.split("Answer:", 1)
+                question_text = parts[0].strip()
+                answer_text = parts[1].strip()
+                if question_text and answer_text:
+                    flashcards.append({"question": question_text, "answer": answer_text})
     return flashcards
 
 @app.route("/get-flashcards/<topic>", methods=["GET"])
