@@ -10,14 +10,18 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [topic, setTopic] = useState("math")
   const [flashcards, setFlashcards] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchFlashcards = async (currentTopic: string) => {
+    setIsLoading(true)
     try {
       const response = await fetch(`http://127.0.0.1:5000/get-flashcards/${currentTopic}`)
       const data = await response.json()
       setFlashcards(data)
     } catch (error) {
       console.error("Error fetching flashcards", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -50,7 +54,7 @@ export default function Home() {
               stroke="currentColor"
               className="w-6 h-6"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </Button>
         </div>
@@ -59,7 +63,13 @@ export default function Home() {
             <Maximize className="h-4 w-4" />
           </Button>
         </div>
-        <FlashcardFeed flashcards={flashcards} />
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <FlashcardFeed flashcards={flashcards} />
+        )}
       </main>
     </div>
   )
