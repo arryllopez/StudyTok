@@ -1,25 +1,19 @@
 "use client"
 
-import { useState } from "react"
 import Flashcard from "./Flashcard"
 
 interface FlashcardFeedProps {
   flashcards: any[]
+  currentIndex: number
   setCurrentIndex: (index: number) => void
 }
 
-export default function FlashcardFeed({ flashcards, setCurrentIndex }: FlashcardFeedProps) {
-  const [currentIndex, setLocalIndex] = useState(0)
-
+export default function FlashcardFeed({ flashcards, currentIndex, setCurrentIndex }: FlashcardFeedProps) {
   const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
     if (event.deltaY > 0 && currentIndex < flashcards.length - 1) {
-      const newIndex = currentIndex + 1
-      setLocalIndex(newIndex)
-      setCurrentIndex(newIndex)
+      setCurrentIndex(currentIndex + 1)
     } else if (event.deltaY < 0 && currentIndex > 0) {
-      const newIndex = currentIndex - 1
-      setLocalIndex(newIndex)
-      setCurrentIndex(newIndex)
+      setCurrentIndex(currentIndex - 1)
     }
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopicManagerSidebar, { Topic } from "./components/TopicManagerSidebar";
 import FlashcardFeed from "./components/FlashcardFeed";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,11 @@ export default function Home() {
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null);
+
+  // Reset currentIndex when the topic changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [selectedTopic]);
 
   const startRecording = async () => {
     // Determine expected input from the current flashcard answer (if available)
@@ -78,7 +83,7 @@ export default function Home() {
 
         {isRecording && <RecordingIndicator isRecording={isRecording} />}
         {selectedTopic ? (
-          <FlashcardFeed flashcards={selectedTopic.questions} setCurrentIndex={setCurrentIndex} />
+          <FlashcardFeed flashcards={selectedTopic.questions} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
         ) : (
           <div className="flex h-full items-center justify-center">
             <p className="text-lg">Select a topic to view flashcards</p>
