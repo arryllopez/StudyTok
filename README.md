@@ -1,69 +1,84 @@
-<h1 align="center" id="title">StudyTok📚</h1>
+# StudyTok📚
 
-<p id="description">This is our hackathon project helping students effectively study with active recall. This app is an AI-powered scroll-based learning for an engaging study experience. Upload your own questions or use AI-generated ones for personalized learning. Voice recognition lets users answer aloud and get instant AI feedback. Active recall and real-time analysis improve retention and understanding. Transforms studying into an interactive social media-style experience. This project was made with a React frontend, with a Flask and Google Cloud backend, using specifically Gemini 2.0 API and Speech-to-Text API.</p>
+This is our hackathon project helping students effectively study with active recall. This app is an AI-powered scroll-based learning for an engaging study experience. Upload your own questions or use AI-generated ones for personalized learning. Voice recognition lets users answer aloud and get instant AI feedback. Active recall and real-time analysis improve retention and understanding. Transforms studying into an interactive social media-style experience. This project was made with a React frontend, with a Flask and Google Cloud backend, using specifically Gemini 2.0 API and Speech-to-Text API.
 
-<h2>Project Screenshots:</h2>
+## Project Screenshots:
 
-<img src="https://imgur.com/a/wxbpEgi" alt="project-screenshot" width="400" height="400/">
+![Project Screenshot](https://imgur.com/a/wxbpEgi)
 
-  
-  
-<h2>🧐 Features</h2>
+## 🧐 Features
 
-Here're some of the project's best features:
+Here are some of the project's best features:
 
-*   AI Flashcard Generation
-*   Organize Flashcards by Topic
-*   Speech Recognition
-*   More to come...
+- AI Flashcard Generation
+- Organize Flashcards by Topic
+- Speech Recognition
+- More to come...
 
-<h2>🛠️ Installation Steps:</h2>
+## 🛠️ Installation Steps
 
-<p>1. To get started first clone the repository and setup the working environment</p>
+1. Clone the repository and set up the working environment:
 
-```
+```sh
 git clone https://github.com/arryllopez/StudyTok
 ```
 
-```
+```sh
 npm install
 ```
 
-<p>3. Setup your API Key </p>
+2. Install required Python libraries:
 
-```
-make a .env file and paste in your API Key!
+```sh
+pip install google flask flask-cors python-dotenv transformers
 ```
 
-<p>4. Make a new terminal and switch to the python_scripts directory and boot up the Flask servers</p>
+3. Set up your API Key:
 
+```sh
+# Create a .env file and paste in your API Key
 ```
+
+4. Start the Flask backend:
+
+```sh
 cd python_scripts
 ```
 
-```
+```sh
 python flashcardGenerator.py
 ```
 
-```
+```sh
 python voiceChecker.py
 ```
 
-<p>7. Run the application with:</p>
+5. Run the application:
 
-```
+```sh
 npm run dev
 ```
 
-  
-  
-<h2>💻 Built with</h2>
+## 💻 Built with
 
 Technologies used in the project:
 
-*   Next.js
-*   Google Cloud Speech-to-Text API
-*   Gemini 2.0 API
-*   Flask
-*   React
-*   Tailwind CSS
+- Next.js
+- Google Cloud Speech-to-Text API
+- Gemini 2.0 API
+- Flask
+- React
+- Tailwind CSS
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit a pull request or open an issue to discuss improvements.
+
+## 📞 Contact
+
+For any inquiries, reach out via email at [your-email@example.com](mailto:your-email@example.com).
+
