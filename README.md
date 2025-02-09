@@ -29,7 +29,7 @@ git clone https://github.com/arryllopez/StudyTok
 npm install
 ```
 
-<p>3. Setup your API Key (or email support)</p>
+<p>3. Setup your API Key </p>
 
 ```
 make a .env file and paste in your API Key!
