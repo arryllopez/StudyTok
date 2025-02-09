@@ -34,3 +34,4 @@ export default function Flashcard({ question, answer }: FlashcardProps) {
     </Card>
   )
 }
+
