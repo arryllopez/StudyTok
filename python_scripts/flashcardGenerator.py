@@ -6,6 +6,7 @@
 
 #trying gemini api
 import os
+import re
 from google import genai
 from flask import Flask, jsonify, request
 from flask_cors import CORS  # Import CORS
@@ -27,10 +28,10 @@ def generate_flashcards(topic, num_questions=5):
     # Create a dynamic prompt based on the user input number of questions
     prompt = (
         f"Generate {num_questions} flashcard questions based on '{topic}'. "
-        "Each flashcard should follow this format: \n"
+        "Each flashcard should follow this format:\n"
         "Question: <the question text>\n"
         "Answer: <the answer text>\n"
-        "Provide each question-answer pair on separate lines."
+        "Ensure each question-answer pair is separated by a new line."
     )
     response = client.models.generate_content(
         model="gemini-2.0-flash",
@@ -39,16 +40,11 @@ def generate_flashcards(topic, num_questions=5):
 
     flashcards = []
     if response and response.text:
-        content = response.text.strip().split("\n")
-        question = None
-        for line in content:
-            line = line.strip()
-            if line.startswith("Question:"):
-                question = line[len("Question:"):].strip()
-            elif line.startswith("Answer:") and question is not None:
-                answer = line[len("Answer:"):].strip()
-                flashcards.append({"question": question, "answer": answer})
-                question = None  # Reset for the next pair
+        # Use regex to strictly extract question and answer pairs
+        # This pattern matches a "Question:" line followed by a newline and an "Answer:" line
+        matches = re.findall(r"Question:\s*(.*?)\s*\nAnswer:\s*(.*?)(?:\n(?=Question:)|\Z)", response.text, re.DOTALL)
+        for question, answer in matches:
+            flashcards.append({"question": question.strip(), "answer": answer.strip()})
     return flashcards
 
 @app.route("/get-flashcards/<topic>", methods=["GET"])
