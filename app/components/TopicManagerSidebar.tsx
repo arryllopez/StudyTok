@@ -80,15 +80,16 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
   }
 
   return (
-    <div className="w-80 bg-background shadow-lg p-6 space-y-6">
+    <div className="w-80 bg-background border-r border-border shadow-lg p-6 space-y-6">
     
       <div className="flex justify-center mb-4">
         <img
-          src="/sidebarlogo.png"  // Place your logo.png in the public folder
+          src="/sidebarlogo.png" 
           alt="Study App Logo"
-          className="w-50 h-50" // Adjust size as needed (w-32 = 128px)
+          className="w-50 h-50" 
         />
       </div>
+
       <Button onClick={() => setIsCreateModalOpen(true)} className="w-full" size="lg">
         New Topic
       </Button>
