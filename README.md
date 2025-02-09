@@ -1,6 +1,10 @@
-<h1 align="center" id="title">StudyTok</h1>
+<h1 align="center" id="title">StudyTok📚</h1>
 
 <p id="description">This is a Next.js project helping students effectively study with active recall. This app is an AI-powered scroll-based learning for an engaging study experience. Upload your own questions or use AI-generated ones for personalized learning. Voice recognition lets users answer aloud and get instant AI feedback. Active recall and real-time analysis improve retention and understanding. Transforms studying into an interactive social media-style experience.</p>
+
+<h2>Project Screenshots:</h2>
+
+<img src="https://imgur.com/a/wxbpEgi" alt="project-screenshot" width="400" height="400/">
 
   
   
