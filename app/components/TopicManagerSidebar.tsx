@@ -1,60 +1,58 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
 
 type Question = {
-  question: string;
-  answer: string;
-};
+  question: string
+  answer: string
+}
 
 export type Topic = {
-  id: string;
-  name: string;
-  questions: Question[];
-  method: "auto" | "manual";
-};
+  id: string
+  name: string
+  questions: Question[]
+  method: "auto" | "manual"
+}
 
 interface TopicManagerSidebarProps {
-  onTopicSelect: (topic: Topic) => void;
+  onTopicSelect: (topic: Topic) => void
 }
 
 export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSidebarProps) {
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [createMode, setCreateMode] = useState<"generate" | "manual">("generate");
-  const [newTopicName, setNewTopicName] = useState("");
-  const [numQuestions, setNumQuestions] = useState(5);
-  const [manualQuestions, setManualQuestions] = useState<Question[]>([]);
-  const [editingTopic, setEditingTopic] = useState<Topic | null>(null);
+  const [topics, setTopics] = useState<Topic[]>([])
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [createMode, setCreateMode] = useState<"generate" | "manual">("generate")
+  const [newTopicName, setNewTopicName] = useState("")
+  const [numQuestions, setNumQuestions] = useState(5)
+  const [manualQuestions, setManualQuestions] = useState<Question[]>([])
+  const [editingTopic, setEditingTopic] = useState<Topic | null>(null)
 
   const resetModalFields = () => {
-    setNewTopicName("");
-    setNumQuestions(5);
-    setManualQuestions([]);
-    setCreateMode("generate");
-  };
+    setNewTopicName("")
+    setNumQuestions(5)
+    setManualQuestions([])
+    setCreateMode("generate")
+  }
 
   const handleGenerate = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/get-flashcards/${newTopicName}?num_questions=${numQuestions}`
-      );
-      const data = await response.json();
+      const response = await fetch(`http://127.0.0.1:5000/get-flashcards/${newTopicName}?num_questions=${numQuestions}`)
+      const data = await response.json()
       const newTopic: Topic = {
         id: Date.now().toString(),
         name: newTopicName,
         questions: data,
         method: "auto",
-      };
-      setTopics((prev) => [...prev, newTopic]);
-      setIsCreateModalOpen(false);
-      resetModalFields();
+      }
+      setTopics((prev) => [...prev, newTopic])
+      setIsCreateModalOpen(false)
+      resetModalFields()
     } catch (error) {
-      console.error("Error generating flashcards", error);
+      console.error("Error generating flashcards", error)
     }
-  };
+  }
 
   const handleSaveManual = () => {
     const newTopic: Topic = {
@@ -62,39 +60,39 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
       name: newTopicName,
       questions: manualQuestions,
       method: "manual",
-    };
-    setTopics((prev) => [...prev, newTopic]);
-    setIsCreateModalOpen(false);
-    resetModalFields();
-  };
+    }
+    setTopics((prev) => [...prev, newTopic])
+    setIsCreateModalOpen(false)
+    resetModalFields()
+  }
 
   const handleDeleteTopic = (id: string) => {
-    setTopics((prev) => prev.filter((topic) => topic.id !== id));
-  };
+    setTopics((prev) => prev.filter((topic) => topic.id !== id))
+  }
 
   const handleEditTopicSave = (updatedTopic: Topic) => {
-    setTopics((prev) =>
-      prev.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic))
-    );
-    setEditingTopic(null);
-  };
+    setTopics((prev) => prev.map((topic) => (topic.id === updatedTopic.id ? updatedTopic : topic)))
+    setEditingTopic(null)
+  }
 
   const addManualQuestion = () => {
-    setManualQuestions((prev) => [...prev, { question: "", answer: "" }]);
-  };
+    setManualQuestions((prev) => [...prev, { question: "", answer: "" }])
+  }
 
   return (
-    <div className="w-64 bg-background shadow-lg p-4">
-      <Button onClick={() => setIsCreateModalOpen(true)}>New Topic</Button>
+    <div className="w-80 bg-background shadow-lg p-6 space-y-6">
+      <Button onClick={() => setIsCreateModalOpen(true)} className="w-full" size="lg">
+        New Topic
+      </Button>
 
-      <div className="mt-4 space-y-2">
+      <div className="space-y-4">
         {topics.map((topic) => (
-          <Card key={topic.id}>
-            <CardContent>
-              <div className="flex justify-between items-center">
+          <Card key={topic.id} className="overflow-hidden">
+            <CardContent className="p-4">
+              <div className="space-y-4">
                 <div>
-                  <h3 className="font-semibold">{topic.name}</h3>
-                  <p className="text-sm">
+                  <h3 className="font-semibold text-lg">{topic.name}</h3>
+                  <p className="text-sm text-muted-foreground">
                     {topic.questions.length} Question{topic.questions.length !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -102,10 +100,15 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                   <Button size="sm" variant="secondary" onClick={() => onTopicSelect(topic)}>
                     View
                   </Button>
-                  <Button size="sm" onClick={() => setEditingTopic(topic)}>
+                  <Button size="sm" variant="outline" onClick={() => setEditingTopic(topic)}>
                     Edit
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleDeleteTopic(topic.id)}>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDeleteTopic(topic.id)}
+                    className="ml-auto"
+                  >
                     Delete
                   </Button>
                 </div>
@@ -155,9 +158,9 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                       <Input
                         value={q.question}
                         onChange={(e) => {
-                          const updated = [...manualQuestions];
-                          updated[index].question = e.target.value;
-                          setManualQuestions(updated);
+                          const updated = [...manualQuestions]
+                          updated[index].question = e.target.value
+                          setManualQuestions(updated)
                         }}
                         placeholder="Question"
                         className="mb-2"
@@ -165,9 +168,9 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                       <Input
                         value={q.answer}
                         onChange={(e) => {
-                          const updated = [...manualQuestions];
-                          updated[index].answer = e.target.value;
-                          setManualQuestions(updated);
+                          const updated = [...manualQuestions]
+                          updated[index].answer = e.target.value
+                          setManualQuestions(updated)
                         }}
                         placeholder="Answer"
                       />
@@ -186,10 +189,13 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
               </>
             )}
             <div className="mt-4">
-              <Button variant="ghost" onClick={() => {
-                setIsCreateModalOpen(false);
-                resetModalFields();
-              }}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setIsCreateModalOpen(false)
+                  resetModalFields()
+                }}
+              >
                 Close
               </Button>
             </div>
@@ -205,9 +211,7 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
             <Input
               id="editTopicName"
               value={editingTopic.name}
-              onChange={(e) =>
-                setEditingTopic({ ...editingTopic, name: e.target.value })
-              }
+              onChange={(e) => setEditingTopic({ ...editingTopic, name: e.target.value })}
               placeholder="Enter topic name"
             />
             <div className="mt-4">
@@ -217,9 +221,9 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                   <Input
                     value={q.question}
                     onChange={(e) => {
-                      const updatedQuestions = [...editingTopic.questions];
-                      updatedQuestions[index].question = e.target.value;
-                      setEditingTopic({ ...editingTopic, questions: updatedQuestions });
+                      const updatedQuestions = [...editingTopic.questions]
+                      updatedQuestions[index].question = e.target.value
+                      setEditingTopic({ ...editingTopic, questions: updatedQuestions })
                     }}
                     placeholder="Question"
                     className="mb-2"
@@ -227,9 +231,9 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
                   <Input
                     value={q.answer}
                     onChange={(e) => {
-                      const updatedQuestions = [...editingTopic.questions];
-                      updatedQuestions[index].answer = e.target.value;
-                      setEditingTopic({ ...editingTopic, questions: updatedQuestions });
+                      const updatedQuestions = [...editingTopic.questions]
+                      updatedQuestions[index].answer = e.target.value
+                      setEditingTopic({ ...editingTopic, questions: updatedQuestions })
                     }}
                     placeholder="Answer"
                   />
@@ -248,9 +252,7 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
               </Button>
             </div>
             <div className="flex justify-end space-x-2 mt-4">
-              <Button onClick={() => editingTopic && handleEditTopicSave(editingTopic)}>
-                Save
-              </Button>
+              <Button onClick={() => editingTopic && handleEditTopicSave(editingTopic)}>Save</Button>
               <Button variant="ghost" onClick={() => setEditingTopic(null)}>
                 Cancel
               </Button>
@@ -259,5 +261,6 @@ export default function TopicManagerSidebar({ onTopicSelect }: TopicManagerSideb
         </div>
       )}
     </div>
-  );
+  )
 }
+
