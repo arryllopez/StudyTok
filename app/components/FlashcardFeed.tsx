@@ -1,22 +1,27 @@
-"use client" 
+"use client"
 
-import { useState } from "react";
-import Flashcard from "./Flashcard";
+import { useState } from "react"
+import Flashcard from "./Flashcard"
 
 interface FlashcardFeedProps {
-  flashcards: any[];
+  flashcards: any[]
+  setCurrentIndex: (index: number) => void
 }
 
-export default function FlashcardFeed({ flashcards }: FlashcardFeedProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function FlashcardFeed({ flashcards, setCurrentIndex }: FlashcardFeedProps) {
+  const [currentIndex, setLocalIndex] = useState(0)
 
   const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
     if (event.deltaY > 0 && currentIndex < flashcards.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      const newIndex = currentIndex + 1
+      setLocalIndex(newIndex)
+      setCurrentIndex(newIndex)
     } else if (event.deltaY < 0 && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      const newIndex = currentIndex - 1
+      setLocalIndex(newIndex)
+      setCurrentIndex(newIndex)
     }
-  };
+  }
 
   return (
     <div className="h-full overflow-hidden" onWheel={handleScroll}>
@@ -31,5 +36,5 @@ export default function FlashcardFeed({ flashcards }: FlashcardFeedProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }

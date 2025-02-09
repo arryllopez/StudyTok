@@ -6,7 +6,6 @@ import FlashcardFeed from "./components/FlashcardFeed"
 import { Button } from "@/components/ui/button"
 import { Maximize } from "lucide-react"
 
-
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [topic, setTopic] = useState("math")
@@ -14,6 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const fetchFlashcards = async (currentTopic: string) => {
     setIsLoading(true)
@@ -38,6 +38,9 @@ export default function Home() {
 
   const startRecording = async () => {
     if (!flashcards.length) return
+
+    const currentFlashcard = flashcards[currentIndex] // Get the current flashcard
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       const mediaRecorder = new MediaRecorder(stream)
@@ -53,8 +56,9 @@ export default function Home() {
         const blob = new Blob(chunks, { type: "audio/wav" })
         const formData = new FormData()
         formData.append("audio", blob, "recording.wav")
-        // Use the first flashcard's answer as the "expected" answer.
-        formData.append("expected", flashcards[0].answer)
+        
+        // Use the current flashcard's answer as the "expected" answer
+        formData.append("expected", currentFlashcard.answer)
 
         try {
           // This URL points to your Python server's /check-answer endpoint running on port 5001.
@@ -125,9 +129,7 @@ export default function Home() {
         {/* Feedback overlay with lower z-index */}
         {feedback && (
           <div
-            className={`absolute inset-0 z-20 pointer-events-none transition-opacity duration-500 ${
-              feedback === "correct" ? "bg-green-500 opacity-50" : "bg-red-500 opacity-50"
-            }`}
+            className={`absolute inset-0 z-20 pointer-events-none transition-opacity duration-500 ${feedback === "correct" ? "bg-green-500 opacity-50" : "bg-red-500 opacity-50"}`}
           ></div>
         )}
 
@@ -137,7 +139,7 @@ export default function Home() {
               <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : (
-            <FlashcardFeed flashcards={flashcards} />
+            <FlashcardFeed flashcards={flashcards} setCurrentIndex={setCurrentIndex} />
           )}
         </div>
 
@@ -152,4 +154,3 @@ export default function Home() {
     </div>
   )
 }
-
