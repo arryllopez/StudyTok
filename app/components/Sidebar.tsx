@@ -8,11 +8,12 @@ import { Label } from "@/components/ui/label"
 interface SidebarProps {
   open: boolean
   setOpen: (open: boolean) => void
+  topic: string
+  setTopic: (topic: string) => void
+  onGenerateFlashcards: () => void
 }
 
-export default function Sidebar({ open, setOpen }: SidebarProps) {
-  const [topic, setTopic] = useState("")
-
+export default function Sidebar({ open, setOpen, topic, setTopic, onGenerateFlashcards }: SidebarProps) {
   return (
     <div
       className={`fixed inset-y-0 left-0 z-50 w-64 bg-background shadow-lg transform transition-transform duration-300 ease-in-out ${
@@ -35,8 +36,13 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
         <h2 className="text-lg font-semibold mb-4">Flashcard Topic</h2>
         <div className="space-y-2">
           <Label htmlFor="topic">Enter a topic:</Label>
-          <Input id="topic" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g., JavaScript" />
-          <Button className="w-full" onClick={() => console.log("Generate flashcards for:", topic)}>
+          <Input
+            id="topic"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="e.g., JavaScript"
+          />
+          <Button className="w-full" onClick={onGenerateFlashcards}>
             AI Generate Flashcards
           </Button>
         </div>

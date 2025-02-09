@@ -8,6 +8,18 @@ import { Maximize } from "lucide-react"
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [topic, setTopic] = useState("math")
+  const [flashcards, setFlashcards] = useState<any[]>([])
+
+  const fetchFlashcards = async (currentTopic: string) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/get-flashcards/${currentTopic}`)
+      const data = await response.json()
+      setFlashcards(data)
+    } catch (error) {
+      console.error("Error fetching flashcards", error)
+    }
+  }
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -19,7 +31,13 @@ export default function Home() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <Sidebar
+        open={sidebarOpen}
+        setOpen={setSidebarOpen}
+        topic={topic}
+        setTopic={setTopic}
+        onGenerateFlashcards={() => fetchFlashcards(topic)}
+      />
       <main className="flex-1 relative overflow-hidden">
         <div className="absolute top-4 left-4 z-10">
           <Button variant="outline" size="icon" onClick={() => setSidebarOpen(true)}>
@@ -41,7 +59,7 @@ export default function Home() {
             <Maximize className="h-4 w-4" />
           </Button>
         </div>
-        <FlashcardFeed />
+        <FlashcardFeed flashcards={flashcards} />
       </main>
     </div>
   )

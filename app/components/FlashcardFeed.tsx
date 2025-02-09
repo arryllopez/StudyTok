@@ -1,22 +1,14 @@
 "use client" 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Flashcard from "./Flashcard";
 
-export default function FlashcardFeed() {
-  const [flashcards, setFlashcards] = useState<any[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+interface FlashcardFeedProps {
+  flashcards: any[];
+}
 
-  useEffect(() => {
-    // Fetch flashcards from the Flask backend
-    const fetchFlashcards = async () => {
-      const response = await fetch("http://127.0.0.1:5000/get-flashcards/math");
-      const data = await response.json();
-      setFlashcards(data);
-    };
-    
-    fetchFlashcards();
-  }, []);
+export default function FlashcardFeed({ flashcards }: FlashcardFeedProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleScroll = (event: React.WheelEvent<HTMLDivElement>) => {
     if (event.deltaY > 0 && currentIndex < flashcards.length - 1) {
