@@ -1,6 +1,6 @@
 <h1 align="center" id="title">StudyTok📚</h1>
 
-<p id="description">This is a Next.js project helping students effectively study with active recall. This app is an AI-powered scroll-based learning for an engaging study experience. Upload your own questions or use AI-generated ones for personalized learning. Voice recognition lets users answer aloud and get instant AI feedback. Active recall and real-time analysis improve retention and understanding. Transforms studying into an interactive social media-style experience.</p>
+<p id="description">This is our hackathon project helping students effectively study with active recall. This app is an AI-powered scroll-based learning for an engaging study experience. Upload your own questions or use AI-generated ones for personalized learning. Voice recognition lets users answer aloud and get instant AI feedback. Active recall and real-time analysis improve retention and understanding. Transforms studying into an interactive social media-style experience. This project was made with a React frontend, with a Flask and Google Cloud backend, using specifically Gemini 2.0 API and Speech-to-Text API.</p>
 
 <h2>Project Screenshots:</h2>
 
