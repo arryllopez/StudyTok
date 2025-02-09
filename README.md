@@ -70,15 +70,5 @@ Technologies used in the project:
 - React
 - Tailwind CSS
 
-## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to submit a pull request or open an issue to discuss improvements.
-
-## 📞 Contact
-
-For any inquiries, reach out via email at [your-email@example.com](mailto:your-email@example.com).
 
