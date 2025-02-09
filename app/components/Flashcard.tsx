@@ -13,24 +13,25 @@ export default function Flashcard({ question, answer }: FlashcardProps) {
   const [showAnswer, setShowAnswer] = useState(false)
 
   return (
-    <Card className="w-80 h-96 flex flex-col justify-between">
-      <CardContent className="flex flex-col items-center justify-center h-full p-6">
-        <div className="text-center mb-4">
-          <h3 className="text-lg font-semibold mb-2">Question:</h3>
-          <p>{question}</p>
+    <Card className="w-full h-full max-w-4xl mx-auto flex flex-col justify-between shadow-lg">
+      <CardContent className="flex flex-col items-center justify-center h-full p-8">
+        <div className="text-center mb-8 w-full">
+          <h3 className="text-3xl font-semibold mb-4">Question:</h3>
+          <p className="text-xl">{question}</p>
         </div>
         {showAnswer && (
-          <div className="text-center mb-4">
-            <h3 className="text-lg font-semibold mb-2">Answer:</h3>
-            <p>{answer}</p>
+          <div className="text-center mt-8 w-full">
+            <h3 className="text-3xl font-semibold mb-4">Answer:</h3>
+            <p className="text-xl">{answer}</p>
           </div>
         )}
       </CardContent>
-      <div className="p-4">
-        <Button className="w-full" onClick={() => setShowAnswer(!showAnswer)}>
+      <div className="p-6">
+        <Button className="w-full text-lg py-6" onClick={() => setShowAnswer(!showAnswer)}>
           {showAnswer ? "Hide Answer" : "Show Answer"}
         </Button>
       </div>
     </Card>
   )
 }
+
