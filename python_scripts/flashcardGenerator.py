@@ -40,9 +40,14 @@ def generate_flashcards(topic, num_questions=5):
 
     flashcards = []
     if response and response.text:
-        # Use regex to strictly extract question and answer pairs
-        # This pattern matches a "Question:" line followed by a newline and an "Answer:" line
-        matches = re.findall(r"Question:\s*(.*?)\s*\nAnswer:\s*(.*?)(?:\n(?=Question:)|\Z)", response.text, re.DOTALL)
+        response_text = response.text
+        # Remove any content before the first "Question:" to avoid a misaligned pair.
+        first_question_index = response_text.find("Question:")
+        if first_question_index != -1:
+            response_text = response_text[first_question_index:]
+
+        # Use a refined regex that anchors "Question:" at the start of lines.
+        matches = re.findall(r"(?im)^Question:\s*(.*?)\s*\nAnswer:\s*(.*?)(?=\nQuestion:|\Z)", response_text)
         for question, answer in matches:
             flashcards.append({"question": question.strip(), "answer": answer.strip()})
     return flashcards
